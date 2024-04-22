@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kigali Bus Seat Booking</title>
+    <link rel="stylesheet" href="kbs-bus_booking.css">
+</head>
+<body>
+    <div class="background-image"></div>
+    <header>
+        <h1>Welcome to Kigali Bus Seat Booking</h1>
+        <nav>
+            <a href="login.html">Login</a>
+            <a href="sign-up.html">Sign Up</a>
+        </nav>
+    </header>
+    <main>
+        <div class="description">
+            <h2>About Us</h2>
+            <p>Welcome to Kigali Bus Services Booking, your go-to platform for booking bus seats conveniently. Whether you're commuting within the city or traveling long distances, we've got you covered. With our user-friendly interface, real-time updates, and secure booking process, you can enjoy a hassle-free travel experience. Start planning your journey today!</p>
+        </div>
+        <div class="search-container">
+            <h2>Find Your Bus</h2>
+            <input type="text" id="currentLocation" placeholder="Enter current location">
+            <input type="text" id="destination" placeholder="Enter destination">
+            <button id="searchButton">Search</button>
+        </div>
+        <div id="busResults" class="bus-results">
+            <!-- Bus search results will be displayed here -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 KBS Booking</p>
+    </footer>
+    <script src="kbs-script.js"></script>
+</body>
+</html>
