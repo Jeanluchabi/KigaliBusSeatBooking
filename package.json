@@ -1,0 +1,15 @@
+{
+  "name": "kigalibusseatbooking",
+  "version": "1.0.0",
+  "description": "This is a project for KBS online Booking done by Jean Luc HABIMANA and Pacifique Nshuti RUKATAZA",
+  "main": "db.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

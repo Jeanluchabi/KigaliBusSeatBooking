@@ -1,43 +1,46 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-// Serve static files from the public directory
-app.use(express.static('public'));
+// Middleware to parse incoming request bodies
+app.use(bodyParser.urlencoded({ extended: false }));
 
-// Parse URL-encoded bodies (as sent by HTML forms)
-app.use(express.urlencoded({ extended: true }));
+// Dummy user data for demonstration purposes
+let users = [];
 
-// Routes
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
-});
-
+// Route handler for login page
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/login.html');
 });
 
+// Route handler for handling login form submission
 app.post('/login', (req, res) => {
-    // Handle login form submission
     const { emailOrPhone, password } = req.body;
-    // Authenticate user here
-    // Redirect or send response accordingly
-    res.redirect('/');
+    const user = users.find(user => user.emailOrPhone === emailOrPhone && user.password === password);
+    if (user) {
+        res.send('Login successful!');
+    } else {
+        res.send('Invalid email/phone or password. Please try again.');
+    }
 });
 
+// Route handler for sign up page
 app.get('/signup', (req, res) => {
     res.sendFile(__dirname + '/public/sign-up.html');
 });
 
+// Route handler for handling sign up form submission
 app.post('/signup', (req, res) => {
-    // Handle signup form submission
     const { name, phoneNumber, occupation, email, password, paymentMethod } = req.body;
-    // Save user data to database or perform signup process
-    // Redirect or send response accordingly
-    res.redirect('/');
+    // Create a new user object and add it to the users array
+    const newUser = { name, phoneNumber, occupation, email, password, paymentMethod };
+    users.push(newUser);
+    res.send('Account created successfully!');
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
