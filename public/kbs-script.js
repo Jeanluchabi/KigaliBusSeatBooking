@@ -1,9 +1,11 @@
-// kbs-script.js
-
 document.addEventListener('DOMContentLoaded', function() {
     const tripContainer = document.getElementById('tripContainer');
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
+    const searchButton = document.getElementById('searchButton');
+    const currentLocationInput = document.getElementById('currentLocation');
+    const destinationInput = document.getElementById('destination');
+    const busResults = document.getElementById('busResults');
 
     // Array of trip objects with destination and price
     const trips = [
@@ -55,11 +57,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to display trips on the home page
-    function displayTrips() {
-        trips.forEach(function(trip) {
+    function displayTrips(tripsArray) {
+        // Clear existing trip container content
+        tripContainer.innerHTML = '';
+
+        tripsArray.forEach(function(trip) {
             const tripElement = createTripElement(trip);
             tripContainer.appendChild(tripElement);
         });
+    }
+
+    // Function to search for bus routes based on current location and destination
+    function searchBusRoutes() {
+        const currentLocation = currentLocationInput.value.trim();
+        const destination = destinationInput.value.trim();
+
+        // Perform search based on current location and destination (dummy implementation)
+        const searchResults = trips.filter(trip =>
+            trip.destination.toLowerCase().includes(destination.toLowerCase())
+        );
+
+        // Display search results
+        displayTrips(searchResults);
     }
 
     // Function to sign in
@@ -88,6 +107,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listener for the sign up button
     signupButton.addEventListener('click', signUp);
 
-    // Call the displayTrips function to populate the home page with trips
-    displayTrips();
+    // Event listener for the search button
+    searchButton.addEventListener('click', searchBusRoutes);
 });
