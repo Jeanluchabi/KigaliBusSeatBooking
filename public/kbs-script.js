@@ -82,13 +82,76 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to sign in
-    function signIn() {
-        window.location.href = 'login.html'; // Redirect to login page
+    function signIn(event) {
+        event.preventDefault(); // Prevent default form submission
+        const emailOrPhone = document.getElementById('emailOrPhone').value.trim();
+        const password = document.getElementById('password').value.trim();
+        
+        // Perform client-side validation
+        if (!emailOrPhone || !password) {
+            alert("Please enter both email/phone and password.");
+            return;
+        }
+
+        // Send login request to server using Fetch API or XMLHttpRequest
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ emailOrPhone, password })
+        })
+        .then(response => {
+            if (response.ok) {
+                // Redirect to home page or another location
+                window.location.href = 'index.html';
+            } else {
+                // Handle login failure
+                alert("Login failed. Please check your credentials.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("An error occurred. Please try again later.");
+        });
     }
 
     // Function to sign up
-    function signUp() {
-        window.location.href = 'sign-up.html'; // Redirect to sign up page
+    function signUp(event) {
+        event.preventDefault(); // Prevent default form submission
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const phoneNumber = document.getElementById('phoneNumber').value.trim();
+        const paymentMethod = document.getElementById('paymentMethod').value;
+
+        // Perform client-side validation
+        if (!name || !email || !password || !phoneNumber || !paymentMethod) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        // Send signup request to server using Fetch API or XMLHttpRequest
+        fetch('/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, password, phoneNumber, paymentMethod })
+        })
+        .then(response => {
+            if (response.ok) {
+                // Redirect to home page or another location
+                window.location.href = 'index.html';
+            } else {
+                // Handle signup failure
+                alert("Sign up failed. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("An error occurred. Please try again later.");
+        });
     }
 
     // Function to check if user is logged in
@@ -101,12 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return new Intl.NumberFormat('rw-RW', { style: 'currency', currency: 'RWF' }).format(price);
     }
 
-    // Event listener for the login button
-    loginButton.addEventListener('click', signIn);
+    // Event listeners for form submissions
+    document.getElementById('loginForm').addEventListener('submit', signIn);
+    document.getElementById('signupForm
 
-    // Event listener for the sign up button
-    signupButton.addEventListener('click', signUp);
-
-    // Event listener for the search button
-    searchButton.addEventListener('click', searchBusRoutes);
-});
