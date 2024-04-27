@@ -19,18 +19,22 @@
         </nav>
     </header>
     <main>
+        <!-- Form with improved structure and fields -->
         <form action="/signup" method="post" id="signupForm">
             <label for="name">Full Name:</label>
             <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+            
+            <label for="occupation">Occupation:</label>
+            <input type="text" id="occupation" name="occupation">
             
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" placeholder="Enter your email" required>
             
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            
-            <label for="phoneNumber">Phone Number:</label>
-            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
             
             <label for="paymentMethod">Preferred Payment Method:</label>
             <select id="paymentMethod" name="paymentMethod">
@@ -52,4 +56,6 @@
     <script src="kbs-script.js"></script>
 </body>
 </html>
+
+
 
