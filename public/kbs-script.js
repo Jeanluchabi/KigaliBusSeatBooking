@@ -1,11 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const tripContainer = document.getElementById('tripContainer');
-    const loginButton = document.getElementById('loginButton');
-    const signupButton = document.getElementById('signupButton');
-    const searchButton = document.getElementById('searchButton');
-    const currentLocationInput = document.getElementById('currentLocation');
-    const destinationInput = document.getElementById('destination');
-    const busResults = document.getElementById('busResults');
+
+    // Check if the user is logged in and show appropriate buttons
+    updateButtons();
 
     // Array of trip objects with destination and price
     const trips = [
@@ -15,156 +12,86 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add more trip objects as needed
     ];
 
-    let currentUser = null; // Represents the currently signed-in user
-
     // Function to generate HTML for each trip
     function createTripElement(trip) {
-        const tripElement = document.createElement('div');
-        tripElement.classList.add('trip');
-
-        const destinationElement = document.createElement('h3');
-        destinationElement.textContent = trip.destination;
-
-        const priceElement = document.createElement('p');
-        priceElement.textContent = `Price: ${formatPrice(trip.price)} RWF`;
-        priceElement.classList.add('price');
-
-        const bookButton = document.createElement('button');
-        bookButton.textContent = "Book Now";
-        bookButton.classList.add('book-now-button');
-        bookButton.addEventListener('click', function() {
-            if (isLoggedIn()) {
-                const paymentMode = prompt("Choose payment mode: MTN Mobile Money, Airtel Money, Visa Card, Other");
-                if (paymentMode) {
-                    alert(`Booking trip to ${trip.destination} for ${formatPrice(trip.price)} RWF with ${paymentMode}`);
-                } else {
-                    alert("Please choose a payment mode.");
-                }
-            } else {
-                alert("Please sign in or sign up before booking.");
-            }
-        });
-
-        const detailsContainer = document.createElement('div');
-        detailsContainer.classList.add('details');
-        detailsContainer.appendChild(destinationElement);
-        detailsContainer.appendChild(priceElement);
-
-        tripElement.appendChild(detailsContainer);
-        tripElement.appendChild(bookButton);
-
-        return tripElement;
+        // Code for creating trip element
     }
 
     // Function to display trips on the home page
-    function displayTrips(tripsArray) {
-        // Clear existing trip container content
-        tripContainer.innerHTML = '';
-
-        tripsArray.forEach(function(trip) {
-            const tripElement = createTripElement(trip);
-            tripContainer.appendChild(tripElement);
-        });
-    }
-
-    // Function to search for bus routes based on current location and destination
-    function searchBusRoutes() {
-        const currentLocation = currentLocationInput.value.trim();
-        const destination = destinationInput.value.trim();
-
-        // Perform search based on current location and destination (dummy implementation)
-        const searchResults = trips.filter(trip =>
-            trip.destination.toLowerCase().includes(destination.toLowerCase())
-        );
-
-        // Display search results
-        displayTrips(searchResults);
+    function displayTrips() {
+        // Code for displaying trips
     }
 
     // Function to sign in
-    function signIn(event) {
-        event.preventDefault(); // Prevent default form submission
-        const emailOrPhone = document.getElementById('emailOrPhone').value.trim();
-        const password = document.getElementById('password').value.trim();
-        
-        // Perform client-side validation
-        if (!emailOrPhone || !password) {
-            alert("Please enter both email/phone and password.");
-            return;
-        }
-
-        // Send login request to server using Fetch API or XMLHttpRequest
-        fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ emailOrPhone, password })
-        })
-        .then(response => {
-            if (response.ok) {
-                // Redirect to home page or another location
-                window.location.href = 'index.html';
-            } else {
-                // Handle login failure
-                alert("Login failed. Please check your credentials.");
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("An error occurred. Please try again later.");
-        });
+    function signIn() {
+        window.location.href = 'login.html'; // Redirect to login page
     }
 
     // Function to sign up
-    function signUp(event) {
-        event.preventDefault(); // Prevent default form submission
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const phoneNumber = document.getElementById('phoneNumber').value.trim();
-        const paymentMethod = document.getElementById('paymentMethod').value;
+    function signUp() {
+        window.location.href = 'sign-up.html'; // Redirect to sign up page
+    }
 
-        // Perform client-side validation
-        if (!name || !email || !password || !phoneNumber || !paymentMethod) {
-            alert("Please fill in all fields.");
-            return;
+    // Function to log out
+    async function logout() {
+        try {
+            // Call your server logout endpoint to clear the user's session
+            await fetch('/logout', {
+                method: 'POST',
+                credentials: 'same-origin' // Include cookies in the request
+            });
+            // Redirect the user to the login page after logout
+            window.location.href = 'login.html';
+        } catch (error) {
+            console.error('Error occurred during logout:', error);
+            // Display an error message to the user
         }
+    }
 
-        // Send signup request to server using Fetch API or XMLHttpRequest
-        fetch('/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, email, password, phoneNumber, paymentMethod })
-        })
-        .then(response => {
-            if (response.ok) {
-                // Redirect to home page or another location
-                window.location.href = 'index.html';
+    // Function to check if user is logged in and update buttons accordingly
+    async function updateButtons() {
+        try {
+            // Make a request to your server to check the user's authentication status
+            const response = await fetch('/check-authentication', {
+                method: 'GET',
+                credentials: 'same-origin' // Include cookies in the request
+            });
+            const isLoggedIn = await response.json();
+            
+            const loginButton = document.querySelector('.nav-link[href="login.html"]');
+            const signupButton = document.querySelector('.nav-link[href="sign-up.html"]');
+            const logoutButton = document.getElementById('logoutButton');
+
+            if (isLoggedIn) {
+                if (loginButton) loginButton.style.display = 'none';
+                if (signupButton) signupButton.style.display = 'none';
+                if (logoutButton) logoutButton.style.display = 'inline-block';
             } else {
-                // Handle signup failure
-                alert("Sign up failed. Please try again.");
+                if (loginButton) loginButton.style.display = 'inline-block';
+                if (signupButton) signupButton.style.display = 'inline-block';
+                if (logoutButton) logoutButton.style.display = 'none';
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("An error occurred. Please try again later.");
-        });
+
+            // Event listener for the login button
+            if (loginButton) {
+                loginButton.addEventListener('click', signIn);
+            }
+
+            // Event listener for the sign up button
+            if (signupButton) {
+                signupButton.addEventListener('click', signUp);
+            }
+
+            // Event listener for the logout button
+            if (logoutButton) {
+                logoutButton.addEventListener('click', logout);
+            }
+        } catch (error) {
+            console.error('Error occurred during authentication check:', error);
+            // Display an error message to the user
+        }
     }
 
-    // Function to check if user is logged in
-    function isLoggedIn() {
-        return currentUser !== null;
-    }
-
-    // Function to format price in RWF
-    function formatPrice(price) {
-        return new Intl.NumberFormat('rw-RW', { style: 'currency', currency: 'RWF' }).format(price);
-    }
-
-    // Event listeners for form submissions
-    document.getElementById('loginForm').addEventListener('submit', signIn);
-    document.getElementById('signupForm
-
+    // Call the displayTrips function to populate the home page with trips
+    displayTrips();
+});
