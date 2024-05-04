@@ -46,12 +46,11 @@
             border-radius: 50%; /* Rounded shape for the picture */
             overflow: hidden; /* Hide overflow content */
         }
-        .sign-in-form {
-            display: none; /* Hide sign-in form by default */
+        .sign-in-form, .register-form {
+            display: none; /* Hide forms by default */
             position: fixed;
             top: 50%;
             left: 50%;
-            right: 50%;
             transform: translate(-50%, -50%);
             background-color: white;
             padding: 40px; /* Adjusted padding */
@@ -59,7 +58,7 @@
             z-index: 1100; /* Ensure form is above other elements */
             width: 480px; /* Adjusted width */
         }
-        .sign-in-form form {
+        .sign-in-form form, .register-form form {
             padding: 10px; /* Adjusted padding for form elements */
         }
         .close-button {
@@ -80,6 +79,16 @@
         }
         .content-section {
             display: none; /* Hide content sections by default */
+        }
+        .remember-forget {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -154,15 +163,54 @@
 
     <!-- Sign-in form -->
     <div class="container sign-in-form" id="signInForm">
-        <span class="close-button" onclick="hideAccountForm()">X</span>
+        <span class="close-button" onclick="hideForms()">X</span>
         <h2>Sign In</h2>
         <!-- Form with improved structure and action -->
         <form action="/login" method="post">
-            <label for="emailOrPhone">Email or Phone Number:</label>
-            <input type="text" id="emailOrPhone" name="emailOrPhone" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Sign In</button>
+            <div class="form-group">
+                <label for="emailOrPhone">Email or Phone Number:</label>
+                <input type="text" class="form-control" id="emailOrPhone" name="emailOrPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="remember-forget">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+                <a href="#">Forget Password</a> 
+            </div>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+            <div class="register-link">
+                <p>Don't have an account? <a href="#" onclick="showRegisterForm()">Register</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Register form -->
+    <div class="container register-form" id="registerForm">
+        <span class="close-button" onclick="hideForms()">X</span>
+        <h2>Register</h2>
+        <!-- Form with improved structure and action -->
+        <form action="/register" method="post">
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" class="form-control" id="fullName" name="fullName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+            <div class="register-link">
+                <p>Already have an account? <a href="#" onclick="showAccountForm()">Sign In</a></p>
+            </div>
         </form>
     </div>
 
@@ -202,14 +250,24 @@
 
         // Function to display the sign-in form for the account section
         function showAccountForm() {
+            hideForms(); // Hide all forms
             var signInForm = document.getElementById('signInForm');
             signInForm.style.display = 'block';
         }
 
-        // Function to hide the sign-in form for the account section
-        function hideAccountForm() {
-            var signInForm = document.getElementById('signInForm');
-            signInForm.style.display = 'none';
+        // Function to display the register form for the account section
+        function showRegisterForm() {
+            hideForms(); // Hide all forms
+            var registerForm = document.getElementById('registerForm');
+            registerForm.style.display = 'block';
+        }
+
+        // Function to hide all forms
+        function hideForms() {
+            var forms = document.querySelectorAll('.sign-in-form, .register-form');
+            forms.forEach(function(form) {
+                form.style.display = 'none';
+            });
         }
 
         // Show home content by default when the page loads
