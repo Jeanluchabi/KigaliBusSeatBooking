@@ -92,9 +92,55 @@
             text-align: center;
             margin-top: 10px;
         }
+        /* Custom styles for the carousel */
+        #carousel-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        #carousel-container .carousel-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        #carousel-container .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        #carousel-container .carousel-item.active {
+            opacity: 1;
+        }
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
+    <!-- Carousel -->
+    <div id="carousel-container">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="images/kbs-C.jpg" alt="kbs-C" class="d-block">
+            </div>
+            <div class="carousel-item">
+                <img src="images/kbs-A.jpg" alt="kbs-A" class="d-block">
+            </div>
+            <div class="carousel-item">
+                <img src="images/kbs-d.jpg" alt="kbs-d" class="d-block">
+            </div>
+        </div>
+    </div>
+
     <header>
         <!-- Profile Picture -->
         <div class="profile-pic">
@@ -349,6 +395,21 @@
         window.onload = function() {
             showContent('home-content');
         };
+    </script>
+    <script>
+        // Background carousel effect
+        var carouselItems = document.querySelectorAll('#carousel-container .carousel-item');
+        var currentIdx = 0;
+
+        function nextItem() {
+            carouselItems[currentIdx].classList.remove('active');
+            currentIdx = (currentIdx + 1) % carouselItems.length;
+            carouselItems[currentIdx].classList.add('active');
+            setTimeout(nextItem, 5000); // Change image every 5 seconds
+        }
+
+        // Start the carousel effect
+        nextItem();
     </script>
 </body>
 </html>
