@@ -187,7 +187,68 @@
         <div class="container p-5 my-5 bg-primary text-black balance-content content-section">
             <h2>Balance</h2>
             <!-- Balance content goes here -->
-        </div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">View your balance</button>
+            </div>
+            <!-- The Modal -->
+            <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Balance</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">Balance:0</div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBalanceModal">Add balance now</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            <!-- Add Balance Modal -->
+            <div class="modal fade" id="addBalanceModal">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Add Balance</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+            <form id="addBalanceForm">
+            <div class="mb-3">
+            <label for="balanceAmount" class="form-label">Amount:</label>
+            <input type="number" class="form-control" id="balanceAmount" name="balanceAmount" required>
+            </div>
+            <div class="mb-3">
+            <label for="paymentMethod" class="form-label">Payment Method:</label>
+            <select class="form-select" id="paymentMethod" name="paymentMethod" required>
+            <option value="" selected disabled>Select Payment Method</option>
+            <option value="MTN">MTN Mobile Money</option>
+            <option value="Airtel">Airtel Money</option>
+            <option value="Visa">Visa/Credit Card</option>
+            <option value="Other">Other</option>
+            </select>
+            </div>
+            <div id="phoneInput" style="display: none;" class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number:</label>
+            <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber">
+            </div>
+            <div id="creditCardInput" style="display: none;" class="mb-3">
+            <label for="creditCardNumber" class="form-label">Credit Card Number:</label>
+            <input type="text" class="form-control" id="creditCardNumber" name="creditCardNumber">
+            <label for="creditCardExpiry" class="form-label">Expiry Date:</label>
+            <input type="month" class="form-control" id="creditCardExpiry" name="creditCardExpiry">
+            </div>
+            <button type="button" id="addBalanceButton" class="btn btn-primary">Add Now</button>
+            </form>
+            </div>
+            </div>
+            </div>
         <div class="container p-5 my-5 bg-primary text-black tickets-content content-section">
             <h2>My Tickets</h2>
             <!-- My Tickets content goes here -->
@@ -410,6 +471,37 @@
 
         // Start the carousel effect
         nextItem();
+         // Function to handle the change event on the payment method select element
+         document.getElementById('paymentMethod').addEventListener('change', function() {
+            var phoneInput = document.getElementById('phoneInput');
+            var creditCardInput = document.getElementById('creditCardInput');
+
+            // Reset display styles
+            phoneInput.style.display = 'none';
+            creditCardInput.style.display = 'none';
+
+            // Show/hide input fields based on selected payment method
+            if (this.value === 'MTN' || this.value === 'Airtel') {
+                phoneInput.style.display = 'block';
+            } else if (this.value === 'Visa' || this.value === 'Other') {
+                creditCardInput.style.display = 'block';
+            }
+        });
+
+        // Function to handle the click event on the Add Balance button
+        document.getElementById('addBalanceButton').addEventListener('click', function() {
+            // Validate form fields and submit form
+            var balanceAmount = document.getElementById('balanceAmount').value;
+            var paymentMethod = document.getElementById('paymentMethod').value;
+            var phoneNumber = document.getElementById('phoneNumber').value;
+            var creditCardNumber = document.getElementById('creditCardNumber').value;
+            var creditCardExpiry = document.getElementById('creditCardExpiry').value;
+
+            // Perform form validation here
+
+            // Submit form if validation passes
+            document.getElementById('addBalanceForm').submit();
+        });
     </script>
 </body>
 </html>
