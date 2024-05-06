@@ -148,3 +148,9 @@ footer p {
     position: relative; /* Make the position relative to enable z-index */
     z-index: 1; /* Set a higher z-index value */
 }
+.btn-book-now {
+    margin-left: 80px; /* Adjust the margin as needed */
+    font-size: 14px; /* Adjust the font size as needed */
+    padding: 5px 10px; /* Adjust the padding as needed */
+}
+
