@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         destinationElement.textContent = `Destination: ${trip.destination}`;
 
         const priceElement = document.createElement('p');
-        priceElement.textContent = `Price: ${trip.price}`;
+        priceElement.textContent = `Price: RWF ${trip.price}`;
 
         tripElement.appendChild(destinationElement);
         tripElement.appendChild(priceElement);
@@ -136,4 +136,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add a click event listener to the search button
     searchButton.addEventListener('click', function() {
         // Get the search input value
-       
+        const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
+        
+        // Clear previous search results
+        tripContainer.innerHTML = '';
+
+        // Filter trips based on search input
+        const filteredTrips = trips.filter(trip => trip.destination.toLowerCase().includes(searchInput));
+
+        // Display filtered trips
+        filteredTrips.forEach(trip => {
+            const tripElement = createTripElement(trip);
+            tripContainer.appendChild(tripElement);
+        });
+    });
+
+    // Call updateButtons to initially set button visibility
+    updateButtons();
+});

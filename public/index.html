@@ -146,7 +146,7 @@
         <div class="profile-pic">
             <!-- Placeholder for profile picture -->
         </div>
-        <h1 class="navbar-brand">Kigali Bus Services(KBS) Booking
+        <h1 class="navbar-brand type="width:-50%"><strong>Kigali Bus Services(KBS) Booking</strong>
             <a href="#" class="btn btn-primary btn-lg btn-book-now">Book Now</a><!-- Book Now Button --></h1>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
@@ -173,7 +173,7 @@
                 <h2><strong>Find Your Bus</strong></h2>
                 <input type="text" id="currentLocation" placeholder="Enter current location">
                 <input type="text" id="destination" placeholder="Enter destination">
-                <button id="searchButton bg-dark">Search</button>
+                <button id="searchButton" class="bg-dark">Search</button>
             </div>
             <div id="busResults" class="bus-results">
                 <!-- Bus search results will be displayed here -->
@@ -242,7 +242,7 @@
             <div id="creditCardInput" style="display: none;" class="mb-3">
             <label for="creditCardNumber" class="form-label">Credit Card Number:</label>
             <input type="text" class="form-control" id="creditCardNumber" name="creditCardNumber">
-            <label for="creditCardExpiry" class="form-label">Expiry Date:</label>
+            <label for="creditCardExpiry" class=</label>"form-label">Expiry Date:</label>
             <input type="month" class="form-control" id="creditCardExpiry" name="creditCardExpiry">
             </div>
             <button type="button" id="addBalanceButton" class="btn btn-primary">Add Now</button>
@@ -367,6 +367,7 @@
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JavaScript -->
+    <script src="destination.js"></script>
     <script>
         // Function to toggle menu visibility
         function toggleMenu() {
@@ -484,24 +485,108 @@
             // Show/hide input fields based on selected payment method
             if (this.value === 'MTN' || this.value === 'Airtel') {
                 phoneInput.style.display = 'block';
-            } else if (this.value === 'Visa' || this.value === 'Other') {
+            } else if (this.value === 'Visa') {
                 creditCardInput.style.display = 'block';
             }
         });
 
-        // Function to handle the click event on the Add Balance button
+        // Function to handle the click event on the add balance button
         document.getElementById('addBalanceButton').addEventListener('click', function() {
-            // Validate form fields and submit form
+            // Retrieve form data
             var balanceAmount = document.getElementById('balanceAmount').value;
             var paymentMethod = document.getElementById('paymentMethod').value;
             var phoneNumber = document.getElementById('phoneNumber').value;
             var creditCardNumber = document.getElementById('creditCardNumber').value;
             var creditCardExpiry = document.getElementById('creditCardExpiry').value;
 
-            // Perform form validation here
+            // Perform validation
+            if (balanceAmount === '' || isNaN(balanceAmount)) {
+                alert('Please enter a valid balance amount.');
+                return;
+            }
 
-            // Submit form if validation passes
-            document.getElementById('addBalanceForm').submit();
+            if (paymentMethod === 'MTN' || paymentMethod === 'Airtel') {
+                if (phoneNumber === '') {
+                    alert('Please enter your phone number.');
+                    return;
+                }
+            } else if (paymentMethod === 'Visa') {
+                if (creditCardNumber === '' || creditCardExpiry === '') {
+                    alert('Please enter your credit card details.');
+                    return;
+                }
+            }
+
+            // Add balance logic here (e.g., sending data to the server)
+            // Assuming successful balance addition, close the modal
+            var modal = document.getElementById('addBalanceModal');
+            var bsModal = bootstrap.Modal.getInstance(modal);
+            bsModal.hide();
+
+            // Reset form fields after successful submission
+            document.getElementById('balanceAmount').value = '';
+            document.getElementById('phoneNumber').value = '';
+            document.getElementById('creditCardNumber').value = '';
+            document.getElementById('creditCardExpiry').value = '';
+            document.getElementById('paymentMethod').value = '';
+        });
+    </script>
+    <script>
+        // Define the search function
+        function searchBus() {
+            var currentLocation = document.getElementById('currentLocation').value;
+            var destination = document.getElementById('destination').value;
+            var busResults = document.getElementById('busResults');
+
+            // Perform validation
+            if (currentLocation === '' || destination === '') {
+                alert('Please enter both current location and destination.');
+                return;
+            }
+
+            // Here you would typically send a request to your backend server to fetch bus data
+            // For demonstration purposes, let's assume we have a list of bus data
+            var busData = [
+                { id: 1, busName: 'KBS Express', currentLocation: 'Kigali', destination: 'Nairobi', departureTime: '08:00 AM', arrivalTime: '04:00 PM', price: '$50' },
+                { id: 2, busName: 'KBS Shuttle', currentLocation: 'Kigali', destination: 'Mombasa', departureTime: '09:00 AM', arrivalTime: '05:00 PM', price: '$60' },
+                { id: 3, busName: 'KBS Coach', currentLocation: 'Kigali', destination: 'Kampala', departureTime: '10:00 AM', arrivalTime: '06:00 PM', price: '$70' }
+            ];
+
+            // Filter the bus data based on the search criteria
+            var filteredBusData = busData.filter(function(bus) {
+                return bus.currentLocation.toLowerCase() === currentLocation.toLowerCase() &&
+                    bus.destination.toLowerCase() === destination.toLowerCase();
+            });
+
+            // Display search results
+            if (filteredBusData.length > 0) {
+                var html = '<h3>Available Buses</h3><ul>';
+                filteredBusData.forEach(function(bus) {
+                    html += '<li><strong>' + bus.busName + '</strong><br>';
+                    html += 'Departure: ' + bus.departureTime + '<br>';
+                    html += 'Arrival: ' + bus.arrivalTime + '<br>';
+                    html += 'Price: ' + bus.price + '</li>';
+                });
+                html += '</ul>';
+                busResults.innerHTML = html;
+            } else {
+                busResults.innerHTML = '<p>No buses found for the given search criteria.</p>';
+            }
+        }
+
+        // Add event listener to the search button
+        document.getElementById('searchButton').addEventListener('click', function() {
+            searchBus();
+        });
+
+        // Function to handle search on pressing Enter key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                // Check if the focus is on either of the input fields
+                if (document.activeElement.id === 'currentLocation' || document.activeElement.id === 'destination') {
+                    searchBus();
+                }
+            }
         });
     </script>
 </body>
