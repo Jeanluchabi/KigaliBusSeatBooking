@@ -14,8 +14,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background-image: url('https://rwandainspirer.com/wp-content/uploads/2019/01/kbs.jpg'); 
+    height: 100%; 
     background-size: cover;
     z-index: -1;
     opacity: 0.8; /* Reduce the visibility of the background image */
@@ -154,3 +153,116 @@ footer p {
     padding: 5px 10px; /* Adjust the padding as needed */
 }
 
+.menu-icon {
+    cursor: pointer;
+    font-size: 32px; /* Increased size for the menu icon */
+    margin-right: 20px;
+}
+.menu-content {
+    position: absolute;
+    top: 80px; /* Adjusted top position to push down the contents */
+    right: 20px; /* Adjusted right position as needed */
+    z-index: 1000; /* Ensure menu is above other elements */
+    background-color: #f8f9fa; /* Change background color as needed */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none; /* Hide menu content by default */
+}
+.menu-content ul {
+    list-style-type: none;
+    padding: 0;
+}
+.menu-content li {
+    margin-bottom: 10px;
+}
+.navbar-brand {
+    margin-left: auto; /* Push the brand to the right */
+    margin-right: auto; /* Push the brand to the right */
+    text-align: center; /* Center align the text */
+}
+.profile-pic {
+    margin-left: 20px;
+    width: 50px; /* Adjust the size of the profile picture */
+    height: 50px; /* Adjust the size of the profile picture */
+    background-color: #ccc; /* Placeholder background color */
+    border-radius: 50%; /* Rounded shape for the picture */
+    overflow: hidden; /* Hide overflow content */
+}
+.sign-in-form, .register-form, .reset-password-form {
+    display: none; /* Hide forms by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background color with transparency */
+    padding: 40px; /* Adjusted padding */
+    border: 5px solid #ccc; /* Add border */
+    z-index: 1100; /* Ensure form is above other elements */
+    width: 480px; /* Adjusted width */
+    cursor: move; /* Make forms movable with cursor */
+    color: white; /* Text color */
+}
+.sign-in-form form, .register-form form, .reset-password-form form {
+    padding: 10px; /* Adjusted padding for form elements */
+}
+.close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px; /* Adjusted right position */
+    cursor: pointer;
+    font-size: 20px;
+    background-color: #333; /* Dark background color */
+    color: white;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 50%;
+}
+.close-button:hover {
+    background-color: #555;
+}
+.content-section {
+    display: none; /* Hide content sections by default */
+}
+.remember-forget {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.register-link {
+    text-align: center;
+    margin-top: 10px;
+}
+/* Custom styles for the carousel */
+#carousel-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+#carousel-container .carousel-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+#carousel-container .carousel-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+#carousel-container .carousel-item.active {
+    opacity: 1;
+}
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
