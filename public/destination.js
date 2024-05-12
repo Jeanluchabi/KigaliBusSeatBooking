@@ -50,107 +50,33 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to display trips on the home page
-    function displayTrips() {
-        trips.forEach(trip => {
+    function displayTrips(tripsArray) {
+        tripContainer.innerHTML = ''; // Clear previous trip elements
+        tripsArray.forEach(trip => {
             const tripElement = createTripElement(trip);
             tripContainer.appendChild(tripElement);
         });
     }
 
-    // Function to sign in
-    function signIn() {
-        window.location.href = 'login.html'; // Redirect to login page
+    // Function to filter trips based on search input
+    function filterTrips(searchInput) {
+        const filteredTrips = trips.filter(trip => trip.destination.toLowerCase().includes(searchInput.toLowerCase().trim()));
+        return filteredTrips;
     }
-
-    // Function to sign up
-    function signUp() {
-        window.location.href = 'sign-up.html'; // Redirect to sign up page
-    }
-
-    // Function to log out
-    async function logout() {
-        try {
-            // Call your server logout endpoint to clear the user's session
-            await fetch('/logout', {
-                method: 'POST',
-                credentials: 'same-origin' // Include cookies in the request
-            });
-            // Redirect the user to the login page after logout
-            window.location.href = 'login.html';
-        } catch (error) {
-            console.error('Error occurred during logout:', error);
-            // Display an error message to the user
-        }
-    }
-
-    // Function to check if user is logged in and update buttons accordingly
-    async function updateButtons() {
-        try {
-            // Make a request to your server to check the user's authentication status
-            const response = await fetch('/check-authentication', {
-                method: 'GET',
-                credentials: 'same-origin' // Include cookies in the request
-            });
-            const isLoggedIn = await response.json();
-            
-            const loginButton = document.querySelector('.nav-link[href="login.html"]');
-            const signupButton = document.querySelector('.nav-link[href="sign-up.html"]');
-            const logoutButton = document.getElementById('logoutButton');
-
-            if (isLoggedIn) {
-                if (loginButton) loginButton.style.display = 'none';
-                if (signupButton) signupButton.style.display = 'none';
-                if (logoutButton) logoutButton.style.display = 'inline-block';
-            } else {
-                if (loginButton) loginButton.style.display = 'inline-block';
-                if (signupButton) signupButton.style.display = 'inline-block';
-                if (logoutButton) logoutButton.style.display = 'none';
-            }
-
-            // Event listener for the login button
-            if (loginButton) {
-                loginButton.addEventListener('click', signIn);
-            }
-
-            // Event listener for the sign up button
-            if (signupButton) {
-                signupButton.addEventListener('click', signUp);
-            }
-
-            // Event listener for the logout button
-            if (logoutButton) {
-                logoutButton.addEventListener('click', logout);
-            }
-        } catch (error) {
-            console.error('Error occurred during authentication check:', error);
-            // Display an error message to the user
-        }
-    }
-
-    // Call the displayTrips function to populate the home page with trips
-    displayTrips();
 
     // Get the search button element
     const searchButton = document.getElementById('searchButton');
 
     // Add a click event listener to the search button
     searchButton.addEventListener('click', function() {
-        // Get the search input value
-        const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
+        // Get the current location and destination input values
+        const currentLocationInput = document.getElementById('currentLocation').value.toLowerCase().trim();
+        const destinationInput = document.getElementById('destination').value.toLowerCase().trim();
         
-        // Clear previous search results
-        tripContainer.innerHTML = '';
-
-        // Filter trips based on search input
-        const filteredTrips = trips.filter(trip => trip.destination.toLowerCase().includes(searchInput));
+        // Filter trips based on destination input
+        const filteredTrips = filterTrips(destinationInput);
 
         // Display filtered trips
-        filteredTrips.forEach(trip => {
-            const tripElement = createTripElement(trip);
-            tripContainer.appendChild(tripElement);
-        });
+        displayTrips(filteredTrips);
     });
-
-    // Call updateButtons to initially set button visibility
-    updateButtons();
 });
