@@ -39,6 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const destinationElement = document.createElement('p');
         destinationElement.textContent = `Destination: ${trip.destination}`;
+        // Add event listener to scroll to the book now button when destination is clicked
+        destinationElement.addEventListener('click', function() {
+            const bookNowButton = document.querySelector('.btn-book-now');
+            bookNowButton.scrollIntoView({ behavior: 'smooth' });
+        });
 
         const priceElement = document.createElement('p');
         priceElement.textContent = `Price: RWF ${trip.price}`;
